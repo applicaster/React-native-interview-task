@@ -1,14 +1,63 @@
-import React from "react";
-import { connect } from "react-redux";
-import ReactLoading from "react-loading";
+import React from 'react';
+import { connect } from 'react-redux';
+import ReactLoading from 'react-loading';
+import axios from 'axios';
+import api from './api';
 
 const styles = {
   app: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 };
+
+class TodoCoponent extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    let id = this.props.todo.id;
+    let title = this.props.todo.title;
+    let completed = this.props.todo.completed;
+    let userID = this.props.todo.userID;
+    return (
+      <div>
+        <h1>{title}</h1>
+        <span />
+        <div>{completed}</div>
+      </div>
+    );
+  }
+}
+
+class Tabletodolist extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      todo: []
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get(api.todos)
+      .then(response => {
+        // handle success
+        this.setState({ todo: response.data });
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
+  }
+
+  render() {
+    // console.log(this.state.todo);
+    return null;
+  }
+}
 
 const App = () => (
   <div style={styles.app}>
@@ -22,6 +71,7 @@ const App = () => (
       <li>Bonus: It displays name of the author, next to each task;</li>
     </ul>
     <ReactLoading color="#111e6c" type="spin" />
+    <Tabletodolist />
   </div>
 );
 
